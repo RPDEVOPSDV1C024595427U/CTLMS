@@ -28,6 +28,15 @@ CREATE TABLE IF NOT EXISTS userInquiries (
     submissionDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS users (
+    userID INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(50) NOT NULL
+);
+
+INSERT INTO users (username, password, role) VALUES ('superman', 'password', 'administrator');
+
 -- Insert Dummy Data 
 INSERT INTO books (bookISBN, bookTitle, bookAuthor, bookQuantity, bookShelf) VALUES
 ('9780439023528', 'The Hunger Games', 'Suzanne Collins', 7, 'A1'),
