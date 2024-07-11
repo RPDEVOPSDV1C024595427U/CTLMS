@@ -15,7 +15,7 @@
 	<div class="container login-container">
 		<div class="login-form">
 			<h3 class="text-center mb-4">Login</h3>
-			<form action="#" method="post">
+			<form action="${pageContext.request.contextPath}/Login" method="post">
 				<div class="mb-3">
 					<label for="username" class="form-label">Username</label> <input
 						type="text" class="form-control" id="username" name="username"
