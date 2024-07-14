@@ -1,4 +1,3 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ include file="navbar.jsp"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,12 +9,24 @@
 
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/css/login.css">
+	    <script>
+        window.onload = function() {
+            <c:if test="${sessionScope.user != null}">
+                window.location.href = "${pageContext.request.contextPath}/dashboard.jsp";
+            </c:if>
+        };
+    </script>
 </head>
 <body class="d-flex flex-column min-vh-100">
 	<div class="container login-container">
 		<div class="login-form">
 			<h3 class="text-center mb-4">Login</h3>
-			<form action="#" method="post">
+			<c:if test="${param.error != null}">
+                <div class="alert alert-danger" role="alert">
+                    Invalid Username or Password. Please try again.
+                </div>
+            </c:if>
+			<form action="${pageContext.request.contextPath}/Login" method="post">
 				<div class="mb-3">
 					<label for="username" class="form-label">Username</label> <input
 						type="text" class="form-control" id="username" name="username"
@@ -26,7 +37,7 @@
 						type="password" class="form-control" id="password" name="password"
 						required>
 				</div>
-				<div class="d-flex justify-content-between align-items-center mb-3">
+					<div class="d-flex justify-content-between align-items-center mb-3">
 					<a href="~/resetpassword" class="text-decoration-none">Forgot password?</a>
 					<a href="~/register" class="text-decoration-none">Register</a>
 				</div>

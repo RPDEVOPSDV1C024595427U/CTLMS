@@ -1,8 +1,6 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="navbar.jsp"%>
 <%@ page import="java.util.List"%>
 <%@ page import="com.ctlms.Book"%>
-<%@ include file="navbar.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
