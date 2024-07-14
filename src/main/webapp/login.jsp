@@ -27,7 +27,8 @@
 						required>
 				</div>
 				<div class="d-flex justify-content-between align-items-center mb-3">
-					<a href="#" class="text-decoration-none">Forgot password?</a>
+					<a href="~/resetpassword" class="text-decoration-none">Forgot password?</a>
+					<a href="~/register" class="text-decoration-none">Register</a>
 				</div>
 				<button type="submit" class="btn btn-primary w-100">Login</button>
 			</form>
