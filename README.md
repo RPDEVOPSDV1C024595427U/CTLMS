@@ -11,7 +11,8 @@ This github project is for CT Library Management System.
 - [XAMPP](https://www.apachefriends.org/download.html)
 - [Apache Tomcat 8.0.9](https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.9/bin/)
 - [Eclipse IDE](https://www.eclipse.org/)
-- JAVA 18
+- JAVA 17
+- jdk17
 
 # Environment Setup
 - Download XAMPP on your windows workstation
