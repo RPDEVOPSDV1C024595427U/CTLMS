@@ -39,4 +39,12 @@
 		<servlet-name>contact</servlet-name>
 		<url-pattern>/contact</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>dashboard</servlet-name>
+		<jsp-file>/dashboard.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>dashboard</servlet-name>
+		<url-pattern>/dashboard</url-pattern>
+	</servlet-mapping>
 </web-app>
