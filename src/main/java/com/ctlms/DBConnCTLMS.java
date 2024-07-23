@@ -6,9 +6,9 @@ import java.sql.SQLException;
 
 public final class DBConnCTLMS {
 	
-	private static final String jdbcURL = "jdbc:mysql://localhost:3306/ctlms";
-	private static final String  jdbcUsername = "root";
-	private static final String jdbcPassword = "password";
+	private static final String jdbcURL = System.getenv("DB_URL");
+	private static final String  jdbcUsername = System.getenv("DB_USERNAME");
+	private static final String jdbcPassword = System.getenv("DB_PASSWORD");
 	
     protected static final Connection getConnection() {
     	Connection connection = null;
@@ -20,5 +20,4 @@ public final class DBConnCTLMS {
     	}
     	return connection;
     }
-
 }
