@@ -15,7 +15,17 @@ public class ContactFormServlet extends HttpServlet {
 
 	private static final String INSERT_USERINQUIRIES_SQL = "INSERT INTO userInquiries (email, inquiry) VALUES (?, ?);";
 	
-	@Override
+    private DBConnCTLMS dbConnCTLMS;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        String jdbcURL = System.getenv("DB_URL");
+        String jdbcUsername = System.getenv("DB_USERNAME");
+        String jdbcPassword = System.getenv("DB_PASSWORD");
+        dbConnCTLMS = new DBConnCTLMS(jdbcURL, jdbcUsername, jdbcPassword);
+    }
+    
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	
         String email = request.getParameter("email");
@@ -24,7 +34,7 @@ public class ContactFormServlet extends HttpServlet {
         if (inquiry != null && !inquiry.trim().isEmpty()) {
         	String query = INSERT_USERINQUIRIES_SQL;
         	
-			try (Connection conn = DBConnCTLMS.getConnection();
+			try (Connection conn = dbConnCTLMS.getConnection();
             		PreparedStatement stmt = conn.prepareStatement(query);) {                
                 
                 if (email != null && !email.trim().isEmpty()) {

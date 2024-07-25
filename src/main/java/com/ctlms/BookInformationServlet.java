@@ -12,8 +12,17 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/bookinfo")
 public class BookInformationServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+    private DBConnCTLMS dbConnCTLMS;
 
     @Override
+    public void init() throws ServletException {
+        super.init();
+        String jdbcURL = System.getenv("DB_URL");
+        String jdbcUsername = System.getenv("DB_USERNAME");
+        String jdbcPassword = System.getenv("DB_PASSWORD");
+        dbConnCTLMS = new DBConnCTLMS(jdbcURL, jdbcUsername, jdbcPassword);
+    }
+    
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String isbn = request.getParameter("isbn");
         BookExtendedInfo bookExtendedInfo = null;
@@ -21,7 +30,7 @@ public class BookInformationServlet extends HttpServlet {
 		String query = "SELECT * FROM books WHERE bookISBN = ?";
 		
         if (isbn != null && !isbn.trim().isEmpty()) {
-        	try (Connection conn = DBConnCTLMS.getConnection();
+        	try (Connection conn = dbConnCTLMS.getConnection();
             		PreparedStatement stmt = conn.prepareStatement(query);) {
 
                 stmt.setString(1, isbn);

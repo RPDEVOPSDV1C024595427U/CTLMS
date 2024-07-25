@@ -1,0 +1,33 @@
+services:
+  mysql:
+    build:
+      context: ./mysql
+    container_name: mysql-backend
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ctlms
+      MYSQL_USER: ${CTLMS_DB_USER}
+      MYSQL_PASSWORD_FILE: ${CTLMS_DB_PASSWORD}     
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+
+  tomcat:
+    build: 
+      context: ./tomcat
+    container_name: tomcat-frontend
+    environment:
+      DB_PASSWORD: ${CTLMS_DB_PASSWORD}
+      DB_USERNAME: ${CTLMS_DB_USER}
+      DB_URL: ${DB_URL}     
+    ports:
+      - "80:8080"
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

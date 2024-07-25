@@ -17,8 +17,15 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/Login")
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-
     private static final String SELECT_USER_SQL = "SELECT username, role FROM users WHERE username = ? AND password = ?";
+    String jdbcURL = System.getenv("DB_URL");
+    String jdbcUsername = System.getenv("DB_USERNAME");
+    String jdbcPassword = System.getenv("DB_PASSWORD");
+    private DBConnCTLMS dbConnCTLMS = new DBConnCTLMS(jdbcURL, jdbcUsername, jdbcPassword);
+
+    public void setDbConnCTLMS(DBConnCTLMS dbConnCTLMS) {
+        this.dbConnCTLMS = dbConnCTLMS;
+    }
     
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
@@ -34,7 +41,7 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         if (username != null && !username.trim().isEmpty() && password != null && !password.trim().isEmpty()) {
-            try (Connection conn = DBConnCTLMS.getConnection();
+            try (Connection conn = dbConnCTLMS.getConnection();
                  PreparedStatement stmt = conn.prepareStatement(SELECT_USER_SQL)) {
 
                 stmt.setString(1, username);
