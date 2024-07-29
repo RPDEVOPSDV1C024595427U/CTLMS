@@ -26,6 +26,7 @@ public class ContactFormServlet extends HttpServlet {
         dbConnCTLMS = new DBConnCTLMS(jdbcURL, jdbcUsername, jdbcPassword);
     }
     
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	
         String email = request.getParameter("email");

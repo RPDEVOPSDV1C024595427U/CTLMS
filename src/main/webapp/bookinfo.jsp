@@ -2,7 +2,7 @@
 <%@ page import="com.ctlms.Book"%>
 <%@ page import="com.ctlms.BookExtendedInfo"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <title>Book Information</title>
 </head>

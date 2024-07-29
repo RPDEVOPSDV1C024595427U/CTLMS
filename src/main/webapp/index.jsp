@@ -1,6 +1,6 @@
 <%@ include file="navbar.jsp"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <title>Library Management System</title>
 </head>

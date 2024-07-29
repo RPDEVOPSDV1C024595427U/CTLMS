@@ -27,6 +27,7 @@ public class BookServlet extends HttpServlet {
         this.dbConnCTLMS = dbConnCTLMS;
     }
     
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         List<Book> books = new ArrayList<>();
@@ -46,7 +47,13 @@ public class BookServlet extends HttpServlet {
             }
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error accessing the database", e);
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database access error");
+            try {
+            	response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database access error");
+            }
+            catch (IOException ioe){
+            	response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "IO Error");
+            }
+            
             return;
         }
         

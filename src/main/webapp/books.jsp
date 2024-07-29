@@ -2,7 +2,7 @@
 <%@ page import="java.util.List"%>
 <%@ page import="com.ctlms.Book"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <title>Books</title>
 <link rel="stylesheet" type="text/css"
