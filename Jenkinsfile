@@ -62,7 +62,8 @@ pipeline {
                 sh "${MAVEN_HOME}/bin/mvn test"
             }
         }          
-    }
+      }
+
         post {
         // Clean after build
         always {
@@ -72,5 +73,6 @@ pipeline {
                     notFailBuild: true,
                     patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
                                [pattern: '.propsfile', type: 'EXCLUDE']])
+              }
         }
 }
