@@ -16,20 +16,10 @@ pipeline {
             steps {
                 git url: 'https://github.com/RPDEVOPSDV1C024595427U/CTLMS.git', branch: 'CTLMS96-PomFileUpdateAndTesting-Jason'
             }
-        }
-        stage('Clean') {
-            steps {
-                sh "${MAVEN_HOME}/bin/mvn clean"
-            }
-        }
-        stage('Test') {
-            steps {
-                sh "${MAVEN_HOME}/bin/mvn test"
-            }
-        }          
+        }     
         stage('Build') {
             steps {
-                sh "${MAVEN_HOME}/bin/mvn install"
+                sh "${MAVEN_HOME}/bin/mvn clean install -DskipTests"
             }
         }
         stage('Copy War File') {
@@ -55,5 +45,10 @@ pipeline {
                 }
             }
         }
+        stage('Test') {
+            steps {
+                sh "${MAVEN_HOME}/bin/mvn test"
+            }
+        }          
     }
 }
