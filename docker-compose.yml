@@ -20,7 +20,7 @@ services:
     environment:
       DB_PASSWORD: ${CTLMS_DB_PASSWORD}
       DB_USERNAME: ${CTLMS_DB_USER}
-      DB_URL: ${DB_URL}     
+      DB_URL: jdbc:mysql://mysql:3306/ctlms     
     ports:
       - "80:8080"
     depends_on:
