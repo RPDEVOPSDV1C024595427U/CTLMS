@@ -27,10 +27,11 @@ public class BookInformationServlet extends HttpServlet {
         String isbn = request.getParameter("isbn");
         BookExtendedInfo bookExtendedInfo = null;
         Book book = null;
-		String query = "SELECT * FROM books WHERE bookISBN = ?";
+		String query = "SELECT books.bookID, books.bookISBN, books.bookTitle, books.bookAuthor, books.bookQuantity, books.bookShelf, bookextendedinfo.bookSummary, bookextendedinfo.bookPublisher, bookextendedinfo.bookPublisher, bookextendedinfo.bookYear, bookextendedinfo.imagePath "
+				+ "FROM books INNER JOIN bookextendedinfo ON books.bookISBN = bookextendedinfo.bookISBN WHERE books.bookISBN = ?";
 		
         if (isbn != null && !isbn.trim().isEmpty()) {
-        	try (Connection conn = dbConnCTLMS.getConnection();
+			try (Connection conn = dbConnCTLMS.getConnection();
             		PreparedStatement stmt = conn.prepareStatement(query);) {
 
                 stmt.setString(1, isbn);
@@ -42,24 +43,17 @@ public class BookInformationServlet extends HttpServlet {
                     int bookQuantity = bookRs.getInt("bookQuantity");
                     String bookShelf = bookRs.getString("bookShelf");
                     book = new Book(bookID, isbn, bookTitle, bookQuantity, bookShelf, bookAuthor);
-                }
-
-                String extendedQuery = "SELECT * FROM bookExtendedInfo WHERE bookISBN = ?";
-                PreparedStatement extendedStmt = conn.prepareStatement(extendedQuery);
-                extendedStmt.setString(1, isbn);
-                ResultSet extendedRs = extendedStmt.executeQuery();
-                if (extendedRs.next()) {
-                    String bookSummary = extendedRs.getString("bookSummary");
-                    String bookPublisher = extendedRs.getString("bookPublisher");
-                    int bookYear = extendedRs.getInt("bookYear");
-                    String imagePath = extendedRs.getString("imagePath");
+                    String bookSummary = bookRs.getString("bookSummary");
+                    String bookPublisher = bookRs.getString("bookPublisher");
+                    int bookYear = bookRs.getInt("bookYear");
+                    String imagePath = bookRs.getString("imagePath");
                     bookExtendedInfo = new BookExtendedInfo(isbn, bookSummary, bookPublisher, bookYear, imagePath);
                 }
 
-                conn.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        	
         }
 
         request.setAttribute("book", book);

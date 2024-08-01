@@ -34,12 +34,12 @@ public class DBConnCTLMSTest {
 
     @Test
     public void testGetConnectionSQLException() throws SQLException, ClassNotFoundException {
-        DBConnCTLMS dbConnCTLMS = spy(new DBConnCTLMS(jdbcURL, jdbcUsername, jdbcPassword));
-        doThrow(new SQLException("Mock SQL Exception")).when(dbConnCTLMS).getConnection();
+        DBConnCTLMS dbConnCTLMS2 = spy(new DBConnCTLMS(jdbcURL, jdbcUsername, jdbcPassword));
+        doThrow(new SQLException("Mock SQL Exception")).when(dbConnCTLMS2).getConnection();
         
         SQLException thrown = assertThrows(
                 SQLException.class,
-                dbConnCTLMS::getConnection
+                dbConnCTLMS2::getConnection
         );
         
         assertEquals("Mock SQL Exception", thrown.getMessage());

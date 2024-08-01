@@ -18,13 +18,15 @@ import javax.servlet.http.HttpServletResponse;
 public class BookServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = Logger.getLogger(BookServlet.class.getName());
-    String jdbcURL = System.getenv("DB_URL");
-    String jdbcUsername = System.getenv("DB_USERNAME");
-    String jdbcPassword = System.getenv("DB_PASSWORD");
-    private DBConnCTLMS dbConnCTLMS = new DBConnCTLMS(jdbcURL, jdbcUsername, jdbcPassword);
-
-    public void setDbConnCTLMS(DBConnCTLMS dbConnCTLMS) {
-        this.dbConnCTLMS = dbConnCTLMS;
+	private DBConnCTLMS dbConnCTLMS;
+	
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        String jdbcURL = System.getenv("DB_URL");
+        String jdbcUsername = System.getenv("DB_USERNAME");
+        String jdbcPassword = System.getenv("DB_PASSWORD");
+        dbConnCTLMS = new DBConnCTLMS(jdbcURL, jdbcUsername, jdbcPassword);
     }
     
     @Override

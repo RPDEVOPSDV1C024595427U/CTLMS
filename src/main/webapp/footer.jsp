@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
+<title>footer</title>
 <body>
 	<footer class="bg-dark text-white pt-4 mt-auto">
 		<div class="container">
