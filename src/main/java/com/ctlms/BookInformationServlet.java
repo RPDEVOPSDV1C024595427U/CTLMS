@@ -30,6 +30,7 @@ public class BookInformationServlet extends HttpServlet {
 		String query = "SELECT books.bookID, books.bookISBN, books.bookTitle, books.bookAuthor, books.bookQuantity, books.bookShelf, bookextendedinfo.bookSummary, bookextendedinfo.bookPublisher, bookextendedinfo.bookPublisher, bookextendedinfo.bookYear, bookextendedinfo.imagePath "
 				+ "FROM books INNER JOIN bookExtendedInfo ON books.bookISBN = bookExtendedInfo.bookISBN WHERE books.bookISBN = ?";
 		
+		
         if (isbn != null && !isbn.trim().isEmpty()) {
 			try (Connection conn = dbConnCTLMS.getConnection();
             		PreparedStatement stmt = conn.prepareStatement(query);) {
