@@ -27,8 +27,9 @@ public class BookInformationServlet extends HttpServlet {
         String isbn = request.getParameter("isbn");
         BookExtendedInfo bookExtendedInfo = null;
         Book book = null;
-		String query = "SELECT books.bookID, books.bookISBN, books.bookTitle, books.bookAuthor, books.bookQuantity, books.bookShelf, bookextendedinfo.bookSummary, bookextendedinfo.bookPublisher, bookextendedinfo.bookPublisher, bookextendedinfo.bookYear, bookextendedinfo.imagePath "
-				+ "FROM books INNER JOIN bookextendedinfo ON books.bookISBN = bookextendedinfo.bookISBN WHERE books.bookISBN = ?";
+		String query = "SELECT books.bookID, books.bookISBN, books.bookTitle, books.bookAuthor, books.bookQuantity, books.bookShelf, bookExtendedInfo.bookSummary, bookExtendedInfo.bookPublisher, bookExtendedInfo.bookPublisher, bookExtendedInfo.bookYear, bookExtendedInfo.imagePath "
+				+ "FROM books INNER JOIN bookExtendedInfo ON books.bookISBN = bookExtendedInfo.bookISBN WHERE books.bookISBN = ?";
+		
 		
         if (isbn != null && !isbn.trim().isEmpty()) {
 			try (Connection conn = dbConnCTLMS.getConnection();

@@ -1,6 +1,8 @@
 pipeline {
     agent any
-    
+    options {
+        skipDefaultCheckout(true)
+    }
     environment {
         MAVEN_HOME  = tool 'maven'
         DOCKER_CLI  = '/usr/bin/docker'
@@ -8,6 +10,7 @@ pipeline {
         DB_USERNAME = credentials('jenkins-ctlms-dbusername')
         DB_PASSWORD = credentials('jenkins-ctlms-dbpassword')
         MYSQL_ROOT_PASSWORD = credentials('jenkins-ctlms-mysql-root-password')
+        CTLMS_DB_USER = credentials('jenkins-ctlms-dbusername')
         CTLMS_DB_PASSWORD = credentials('jenkins-ctlms-dbpassword')
     }
     
@@ -16,20 +19,10 @@ pipeline {
             steps {
                 git url: 'https://github.com/RPDEVOPSDV1C024595427U/CTLMS.git', branch: 'CTLMS96-PomFileUpdateAndTesting-Jason'
             }
-        }
-        stage('Clean') {
-            steps {
-                sh "${MAVEN_HOME}/bin/mvn clean"
-            }
-        }
-        stage('Test') {
-            steps {
-                sh "${MAVEN_HOME}/bin/mvn test"
-            }
-        }          
+        }     
         stage('Build') {
             steps {
-                sh "${MAVEN_HOME}/bin/mvn install"
+                sh "${MAVEN_HOME}/bin/mvn clean install -DskipTests"
             }
         }
         stage('Copy War File') {
@@ -39,10 +32,19 @@ pipeline {
                 }
             }
         }
+        stage('Generate SQL Script') {
+            steps {
+                script {
+					sh "(echo 'CREATE ROLE 'webapp_users';' >> ${WORKSPACE}/mysql/init.sql)"
+                    sh "(echo 'GRANT SELECT,INSERT,UPDATE,DELETE,EXECUTE,ALTER,CREATE,DROP,INDEX ON ctlms.* TO 'webapp_users';' >> ${WORKSPACE}/mysql/init.sql)"
+                    sh "(echo 'CREATE USER \"${CTLMS_DB_USER}\"@\"localhost\" IDENTIFIED BY \"${CTLMS_DB_PASSWORD}\" DEFAULT ROLE 'webapp_users';' >> ${WORKSPACE}/mysql/init.sql)"
+                }
+            }
+        }        
         stage('Build Docker Images') {
             steps {
                 script {
-                    sh "${DOCKER_CLI} compose build"
+                    sh "${DOCKER_CLI} compose build --no-cache"
                 }
             }
         }
@@ -55,5 +57,22 @@ pipeline {
                 }
             }
         }
-    }
+        stage('Test') {
+            steps {
+                sh "${MAVEN_HOME}/bin/mvn test"
+            }
+        }          
+      }
+
+        post {
+        // Clean after build
+        always {
+            cleanWs(cleanWhenNotBuilt: false,
+                    deleteDirs: true,
+                    disableDeferredWipeout: true,
+                    notFailBuild: true,
+                    patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
+                               [pattern: '.propsfile', type: 'EXCLUDE']])
+              }
+        }
 }

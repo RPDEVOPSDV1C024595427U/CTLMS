@@ -2,9 +2,6 @@ CREATE DATABASE IF NOT EXISTS ctlms;
 
 USE ctlms;
 
-CREATE USER IF NOT EXISTS 'ctlms_user'@'localhost' IDENTIFIED BY 'your_secure_password';
-GRANT SELECT UPDATE DELETE PRIVILEGES ON ctlms.* TO 'ctlms_user'@'%';
-
 CREATE TABLE IF NOT EXISTS books (
     bookID INT AUTO_INCREMENT,
     bookISBN VARCHAR(13) PRIMARY KEY,
@@ -90,5 +87,3 @@ INSERT INTO bookExtendedInfo (bookISBN, bookSummary, bookPublisher, bookYear, im
 ('9780743273565', 'Summary of The Great Gatsby', 'Charles Scribner\'s Sons', 1925, 'img/placeholder.jpg'),
 ('9780439023528', 'Summary of The Hunger Games', 'Scholastic Press', 2010, 'img/placeholder.jpg'),
 ('9780061120084', 'Summary of To Kill a Mockingbird', 'J.B. Lippincott & Co.', 1960, 'img/placeholder.jpg');
-
-
