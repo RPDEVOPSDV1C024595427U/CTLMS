@@ -33,12 +33,9 @@ pipeline {
         stage('Generate SQL Script') {
             steps {
                 script {
-                    sh '''
-                    cat << EOF >> ${WORKSPACE}/mysql/init.sql
-                    CREATE ROLE 'webapp_users';
-                    GRANT SELECT,INSERT,UPDATE,DELETE,EXECUTE,ALTER,CREATE,DROP,INDEX ON ctlms.* TO 'webapp_users';
-                    CREATE USER "${CTLMS_DB_USER}"@"localhost" IDENTIFIED BY "${CTLMS_DB_PASSWORD}" DEFAULT ROLE 'webapp_users';
-                    EOF
+					sh "echo 'CREATE ROLE 'webapp_users';' >> ${WORKSPACE}/mysql/init.sql"
+                    sh "echo 'GRANT SELECT,INSERT,UPDATE,DELETE,EXECUTE,ALTER,CREATE,DROP,INDEX ON ctlms.* TO 'webapp_users';' >> ${WORKSPACE}/mysql/init.sql"
+                    sh "echo 'CREATE USER \"${CTLMS_DB_USER}\"@\"localhost\" IDENTIFIED BY \"${CTLMS_DB_PASSWORD}\" DEFAULT ROLE 'webapp_users';' >> ${WORKSPACE}/mysql/init.sql"
                     '''
                 }
             }
