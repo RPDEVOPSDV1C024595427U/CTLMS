@@ -87,5 +87,3 @@ INSERT INTO bookExtendedInfo (bookISBN, bookSummary, bookPublisher, bookYear, im
 ('9780743273565', 'Summary of The Great Gatsby', 'Charles Scribner\'s Sons', 1925, 'img/placeholder.jpg'),
 ('9780439023528', 'Summary of The Hunger Games', 'Scholastic Press', 2010, 'img/placeholder.jpg'),
 ('9780061120084', 'Summary of To Kill a Mockingbird', 'J.B. Lippincott & Co.', 1960, 'img/placeholder.jpg');
-
-

@@ -8,6 +8,7 @@ pipeline {
         DB_USERNAME = credentials('jenkins-ctlms-dbusername')
         DB_PASSWORD = credentials('jenkins-ctlms-dbpassword')
         MYSQL_ROOT_PASSWORD = credentials('jenkins-ctlms-mysql-root-password')
+        CTLMS_DB_USER = credentials('jenkins-ctlms-dbuser')
         CTLMS_DB_PASSWORD = credentials('jenkins-ctlms-dbpassword')
     }
     
@@ -29,6 +30,13 @@ pipeline {
                 }
             }
         }
+        stage('Run Scripts') {
+            steps {
+                script {
+                    sh "${WORKSPACE}/mysql/script.sh"
+                }
+            }
+        }        
         stage('Build Docker Images') {
             steps {
                 script {
