@@ -30,10 +30,16 @@ pipeline {
                 }
             }
         }
-        stage('Run Scripts') {
+        stage('Generate SQL Script') {
             steps {
                 script {
-                    sh "${WORKSPACE}/mysql/script.sh"
+                    sh '''
+                    cat << EOF >> ${WORKSPACE}/mysql/init.sql
+                    CREATE ROLE 'webapp_users';
+                    GRANT SELECT,INSERT,UPDATE,DELETE,EXECUTE,ALTER,CREATE,DROP,INDEX ON ctlms.* TO 'webapp_users';
+                    CREATE USER "${CTLMS_DB_USER}" IDENTIFIED BY "${CTLMS_DB_PASSWORD}" DEFAULT ROLE 'webapp_users';
+                    EOF
+                    '''
                 }
             }
         }        
