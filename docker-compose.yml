@@ -4,10 +4,10 @@ services:
       context: ./mysql
     container_name: mysql-backend
     environment:
-      MYSQL_ROOT_PASSWORD_FILE: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ctlms
       MYSQL_USER: ${CTLMS_DB_USER}
-      MYSQL_PASSWORD_FILE: ${CTLMS_DB_PASSWORD}     
+      MYSQL_PASSWORD: ${CTLMS_DB_PASSWORD}     
     ports:
       - "3306:3306"
     networks:
