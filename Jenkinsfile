@@ -42,7 +42,7 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 script {
-                    sh "${DOCKER_CLI} compose build --force-recreate"
+                    sh "${DOCKER_CLI} compose build --no-cache"
                 }
             }
         }
