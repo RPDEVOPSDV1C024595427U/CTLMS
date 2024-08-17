@@ -12,6 +12,7 @@ pipeline {
         MYSQL_ROOT_PASSWORD = credentials('jenkins-ctlms-mysql-root-password')
         CTLMS_DB_USER = credentials('jenkins-ctlms-dbusername')
         CTLMS_DB_PASSWORD = credentials('jenkins-ctlms-dbpassword')
+        SONAR_TOKEN = credentials('jenkins-sonarqube-token')
     }
     
     stages {
@@ -35,10 +36,10 @@ pipeline {
         stage('Generate SQL Script') {
             steps {
                 script {
-					sh "(echo 'CREATE ROLE 'webapp_users';' >> ${WORKSPACE}/mysql/init.sql)"
-                    sh "(echo 'GRANT SELECT,INSERT,UPDATE,DELETE,EXECUTE,ALTER,CREATE,DROP,INDEX ON ctlms.* TO 'webapp_users';' >> ${WORKSPACE}/mysql/init.sql)"
-                    sh "(echo 'CREATE USER \"${CTLMS_DB_USER}\"@\"localhost\" IDENTIFIED BY \"${CTLMS_DB_PASSWORD}\" DEFAULT ROLE 'webapp_users';' >> ${WORKSPACE}/mysql/init.sql)"
-                }
+            sh '''
+                sed 's/\\DB_USER/${CTLMS_DB_USER}/g; s/\\DB_PASSWORD/${CTLMS_DB_PASSWORD}/g' ${WORKSPACE}/mysql/init.sql.template >> ${WORKSPACE}/mysql/init.sql
+            '''
+        		}
             }
         }        
         stage('Build Docker Images') {
@@ -53,16 +54,43 @@ pipeline {
                 script {
                     sh "${DOCKER_CLI} compose down"
                     sh "${DOCKER_CLI} compose up -d"
-                    sleep 30
+                    sleep 20
                 }
             }
         }
+        stage('Clean Up SQL Script') {
+            steps {
+                script {
+                    sh "${DOCKER_CLI} exec mysql-backend rm -f /docker-entrypoint-initdb.d/init.sql"
+                }
+            }
+        }
+        stage('Restart Containers') {
+            steps {
+                script {
+                    sh "${DOCKER_CLI} compose restart"
+                    sleep 10
+                }
+            }
+        }        
         stage('Test') {
             steps {
                 sh "${MAVEN_HOME}/bin/mvn test"
             }
-        }          
-      }
+        }
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube Server') {  
+                    sh '''
+                    ${MAVEN_HOME}/bin/mvn sonar:sonar \
+                    -Dsonar.projectKey=CTLMS \
+                    -Dsonar.host.url=http://localhost:9000 \
+                    -Dsonar.login=${SONAR_TOKEN}
+                    '''
+                }
+            }
+        }                   
+      }     
 
         post {
         // Clean after build
