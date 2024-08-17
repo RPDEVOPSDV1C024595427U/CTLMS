@@ -12,18 +12,14 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/bookinfo")
 public class BookInformationServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private DBConnCTLMS dbConnCTLMS;
 
     @Override
-    public void init() throws ServletException {
-        super.init();
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        DBConnCTLMS dbConnCTLMS;
         String jdbcURL = System.getenv("DB_URL");
         String jdbcUsername = System.getenv("DB_USERNAME");
         String jdbcPassword = System.getenv("DB_PASSWORD");
         dbConnCTLMS = new DBConnCTLMS(jdbcURL, jdbcUsername, jdbcPassword);
-    }
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String isbn = request.getParameter("isbn");
         BookExtendedInfo bookExtendedInfo = null;
         Book book = null;
