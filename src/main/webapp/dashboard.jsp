@@ -17,7 +17,7 @@
 	<div class="col-md-12">
 		<div class="container">
 			<div class="container col-md-12">
-				<h2 class="mb-4">Hello, ${sessionScope.user}!</h2>
+				<h2 id="lbl-welcome" class="mb-4">Hello, ${sessionScope.user}!</h2>
 				<c:if test="${sessionScope.role == 'administrator'}">
 					<p>Welcome, Administrator!</p>
 				</c:if>

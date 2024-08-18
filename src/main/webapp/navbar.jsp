@@ -2,9 +2,8 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
-<title>navbar</title>
-<head>
 
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/x-icon" href="img/favicon.ico">
@@ -36,7 +35,7 @@
 						href="${pageContext.request.contextPath}/books">Books</a></li>
 				</ul>
 				<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-					<li class="nav-item"><a class="nav-link"
+					<li class="nav-item"><a id="btn-logout" class="nav-link"
 						href="${pageContext.request.contextPath}/logout">Logout</a></li>
 				</ul>
 			</div>

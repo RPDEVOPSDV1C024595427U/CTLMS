@@ -41,7 +41,7 @@
 					<a href="~/resetpassword" class="text-decoration-none">Forgot password?</a>
 					<a href="~/register" class="text-decoration-none">Register</a>
 				</div>
-				<button type="submit" class="btn btn-primary w-100">Login</button>
+				<button type="submit" id="submit" class="btn btn-primary w-100">Login</button>
 			</form>
 		</div>
 	</div>
