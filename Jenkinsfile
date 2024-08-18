@@ -12,7 +12,9 @@ pipeline {
         MYSQL_ROOT_PASSWORD = credentials('jenkins-ctlms-mysql-root-password')
         CTLMS_DB_USER = credentials('jenkins-ctlms-dbusername')
         CTLMS_DB_PASSWORD = credentials('jenkins-ctlms-dbpassword')
-        SONAR_TOKEN = credentials('jenkins-sonarqube-token')
+        TestSite_URL  = credentials('jenkins-testsite-url')
+        REGISTRY_URL = '4595427u.azurecr.io'
+        IMAGE_NAME = 'ctlms'
     }
     
     stages {
@@ -48,12 +50,17 @@ pipeline {
                     sh "${DOCKER_CLI} compose build --no-cache"
                 }
             }
-        }
+        }       
         stage('Deploy Containers') {
             steps {
                 script {
+					try{
                     sh "${DOCKER_CLI} compose down"
                     sh "${DOCKER_CLI} compose up -d"
+                    }
+                    catch (err) {
+						throw err
+					}
                     sleep 20
                 }
             }
@@ -79,17 +86,36 @@ pipeline {
             }
         }
         stage('SonarQube Analysis') {
+			steps {
+				withCredentials([string(credentialsId: 'jenkins-sonarqube-token', variable: 'SONAR_TOKEN')]) {
+					withSonarQubeEnv('SonarQube Server') {  
+						sh '''
+						${MAVEN_HOME}/bin/mvn sonar:sonar \
+						-Dsonar.projectKey=CTLMS \
+						-Dsonar.host.url=http://localhost:9000/sonar \
+						-Dsonar.login=${SONAR_TOKEN}
+						'''
+						}
+					}
+				}
+	    	} 
+        stage('Tag and Push Docker Images') {
             steps {
-                withSonarQubeEnv('SonarQube Server') {  
-                    sh '''
-                    ${MAVEN_HOME}/bin/mvn sonar:sonar \
-                    -Dsonar.projectKey=CTLMS \
-                    -Dsonar.host.url=http://localhost:9000/sonar \
-                    -Dsonar.login=${SONAR_TOKEN}
-                    '''
+                script {
+					def pipelineName = env.JOB_NAME.toLowerCase()
+            		def tomcatImgTag = "${REGISTRY_URL}/ctlms/tomcat-frontend:${env.BUILD_NUMBER}"
+            		def mysqlImgTag = "${REGISTRY_URL}/ctlms/mysql-backend:${env.BUILD_NUMBER}"
+            		sh "${DOCKER_CLI} tag ${pipelineName}-tomcat ${tomcatImgTag}"
+            		sh "${DOCKER_CLI} tag ${pipelineName}-mysql ${mysqlImgTag}"
+
+            		withCredentials([usernamePassword(credentialsId: 'jenkins-azureregistry-login', usernameVariable: 'REGISTRY_USER', passwordVariable: 'REGISTRY_PASS')]) {
+                		sh '''${DOCKER_CLI} login -u ${REGISTRY_USER} -p ${REGISTRY_PASS} ${REGISTRY_URL}'''             
+                		sh "${DOCKER_CLI} push ${tomcatImgTag}"
+                		sh "${DOCKER_CLI} push ${mysqlImgTag}"
+                    }
                 }
             }
-        }                   
+        } 	    	         
       }     
 
         post {
