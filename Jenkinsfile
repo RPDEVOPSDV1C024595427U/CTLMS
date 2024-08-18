@@ -84,7 +84,7 @@ pipeline {
                     sh '''
                     ${MAVEN_HOME}/bin/mvn sonar:sonar \
                     -Dsonar.projectKey=CTLMS \
-                    -Dsonar.host.url=http://localhost:9000 \
+                    -Dsonar.host.url=http://localhost:9000/sonar \
                     -Dsonar.login=${SONAR_TOKEN}
                     '''
                 }
