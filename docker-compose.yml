@@ -22,7 +22,7 @@ services:
       DB_USERNAME: ${CTLMS_DB_USER}
       DB_URL: jdbc:mysql://mysql:3306/ctlms     
     ports:
-      - "80:8080"
+      - "127.0.0.1:7080:8080"
     depends_on:
       - mysql
     networks:
