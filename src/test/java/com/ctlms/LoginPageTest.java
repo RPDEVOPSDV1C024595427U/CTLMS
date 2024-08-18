@@ -29,7 +29,7 @@ class LoginPageTest {
     @BeforeEach
     void setup() {        
         ChromeOptions options = new ChromeOptions();
-        //options.addArguments("--headless");
+        options.addArguments("--headless");
         driver = new ChromeDriver(options);
     }
 
