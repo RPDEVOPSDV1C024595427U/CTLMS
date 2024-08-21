@@ -7,7 +7,8 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ctlms
       MYSQL_USER: ${CTLMS_DB_USER}
-      MYSQL_PASSWORD: ${CTLMS_DB_PASSWORD}     
+      MYSQL_PASSWORD: ${CTLMS_DB_PASSWORD}
+    restart: always
     ports:
       - "3306:3306"
     networks:
@@ -20,7 +21,8 @@ services:
     environment:
       DB_PASSWORD: ${CTLMS_DB_PASSWORD}
       DB_USERNAME: ${CTLMS_DB_USER}
-      DB_URL: jdbc:mysql://mysql:3306/ctlms     
+      DB_URL: jdbc:mysql://mysql:3306/ctlms
+    restart: always
     ports:
       - "127.0.0.1:7080:8080"
     depends_on:
