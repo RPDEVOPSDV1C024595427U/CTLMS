@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static final String SELECT_USER_SQL = "SELECT username, role FROM users WHERE username = ? AND password = ?";
+    private static final String LOGIN_ERROR_URL = "/login.jsp?error=true";
     String jdbcURL = System.getenv("DB_URL");
     String jdbcUsername = System.getenv("DB_USERNAME");
     String jdbcPassword = System.getenv("DB_PASSWORD");
@@ -26,7 +27,7 @@ public class LoginServlet extends HttpServlet {
     public void setDbConnCTLMS(DBConnCTLMS dbConnCTLMS) {
         this.dbConnCTLMS = dbConnCTLMS;
     }
-    
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {
@@ -58,14 +59,14 @@ public class LoginServlet extends HttpServlet {
 
                     response.sendRedirect(request.getContextPath() + "/dashboard.jsp");
                 } else {
-                    response.sendRedirect(request.getContextPath() + "/login.jsp?error=true");
+                    response.sendRedirect(request.getContextPath() + LOGIN_ERROR_URL);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                response.sendRedirect(request.getContextPath() + "/login.jsp?error=true");
+                response.sendRedirect(request.getContextPath() + LOGIN_ERROR_URL);
             }
         } else {
-            response.sendRedirect(request.getContextPath() + "/login.jsp?error=true");
+            response.sendRedirect(request.getContextPath() + LOGIN_ERROR_URL);
         }
     }
 }
