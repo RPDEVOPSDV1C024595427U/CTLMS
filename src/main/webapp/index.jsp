@@ -7,7 +7,7 @@
 <body class="d-flex flex-column min-vh-100">
 	<div class="container my-4">
 		<div class="content">
-			<h1 class="mb-4">Welcome to the Library Management System version2</h1>
+			<h1 class="mb-4">Welcome to the Library Management System</h1>
 			<p>Your gateway to a world of books.</p>
 			<div id="carouselExampleControlsNoTouching" class="carousel slide"
 				data-bs-touch="false" data-bs-ride="carousel">
